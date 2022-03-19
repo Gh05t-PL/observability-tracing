@@ -1,37 +1,48 @@
-# Observability - Tracing z Opentelemetry
+# Python && Tracing with OpenTelemetry
 
-1. Utwórz repozytorium na swoim koncie github (np., observability-tracing) z zawartością [example/](example/). Repozytorium powinno wyglądać tak:
+## Demo
 
-   ```
-   |- test_perf/
-   |- docker-compose.yaml
-   |- Dockerfile
-   |- main.py
-   |- Makefile
-   \- ... # pozostałe pliki
-   ```
-  
-   Proszę nie zapomnij o dodaniu `.gitignore` (możesz zacząć od [.gitignore](../.gitignore)). 
+*Please add your notes*
 
-2. Przetesuj przykładową aplikację z zaimplementowanym tracingiem w twoim repozytorium. Zwróć uwagę:
+```bash
+```
 
-   - podstawy instrumentacji dla Pythona ([docs](https://opentelemetry.io/docs/instrumentation/python/)),
-   - instrumentacje biblioteki flask ([doc](https://opentelemetry-python-contrib.readthedocs.io/en/latest/instrumentation/flask/flask.html)),
-   - skonfigurowanie jaegera ([docs](https://opentelemetry-python.readthedocs.io/en/latest/exporter/jaeger/jaeger.html)),
-   - jeśli rozbudujesz aplikację o wywołanie zewnętrznych serwisów, możesz dodać instrumentacje do biblioteki requests ([doc](https://opentelemetry-python.readthedocs.io/en/stable/getting-started.html#instrumentation-example-with-flask)).
-   - Zauważ, że Opentelemetry to również [metryki](https://open-telemetry.github.io/opentelemetry-python/getting-started.html#use-metrics-with-prometheus).
+## Developemnt
 
-3. Dodaj do swojego projektu tracing.
 
-4. [Dodatkowe] Załóż konto na [https://lightstep.com](https://lightstep.com). Zmodyfikuj aplikację w taki sposób, aby można było wysyłac trace-y do lightstep.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-5. [Dodatkowe] Zamień jaegera na [Grafana Tempo](https://grafana.com/docs/tempo/latest/getting-started/).
+```bash
+# start all-jeager
+docker compose up  jaeger -d
 
-## Materiały dodatkowe
+export JAEGER_HOST=127.0.0.1
+make run
+```
 
-- [OT python cookbook](https://opentelemetry.io/docs/instrumentation/python/cookbook/)
-- https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md
-- [AWS i OT](https://aws.amazon.com/blogs/opensource/auto-instrumenting-a-python-application-with-an-aws-distro-for-opentelemetry-lambda-layer/)
-- [GCP i OT](https://cloud.google.com/trace/docs/setup/python-ot)
-- [Azure i OT](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-overview)
-- https://httpbin.org
+Open [http://localhost:16686](http://localhost:16686) to see Jaeger UI.
+
+```bash
+make srv_random_trafic_complex_slow_db_and_svc
+make srv_random_trafic_complex_failed_third_party
+```
+
+To bring more traffic:
+
+```bash
+make perf_test
+```
+
+## Reading materials
+
+- [Prometheus i OT](https://open-telemetry.github.io/opentelemetry-python/getting-started.html#use-metrics-with-prometheus)
+- [opentelemetry-python getting started](https://opentelemetry-python.readthedocs.io/en/stable/getting-started.html)
+- https://opentelemetry-python-contrib.readthedocs.io/en/latest/instrumentation/flask/flask.html
+- https://opentelemetry-python.readthedocs.io/en/latest/exporter/jaeger/jaeger.html
+- https://opentelemetry.lightstep.com/spans/
+- https://blog.thundra.io/instrumentation-of-python-apps-with-opentracing
+- https://www.datadoghq.com/blog/instrument-python-apps-with-datadog-and-opentelemetry/
+- [Fix for Message Too Long errors on MacOS](https://github.com/jaegertracing/jaeger-client-node/issues/124#issuecomment-324222456) ([jaeger docs](https://www.jaegertracing.io/docs/1.19/client-libraries/#emsgsize-and-udp-buffer-limits))

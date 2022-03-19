@@ -1,5 +1,0 @@
-flask
-opentelemetry-instrumentation-flask
-opentelemetry-instrumentation-requests
-opentelemetry-exporter-jaeger
-requests
